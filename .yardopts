@@ -1,0 +1,5 @@
+--markup markdown
+--readme README.md
+--files CHANGELOG.md
+--exclude lib/electra/grammar.rb
+lib/**/*.rb

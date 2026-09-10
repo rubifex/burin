@@ -1,0 +1,105 @@
+module Electra
+  VERSION: String
+  type type_description = Symbol | String | Type | Array[untyped]
+  type branch = ^(Function) -> untyped
+
+  class Error < StandardError
+  end
+
+  def self.disassemble: (String binary) -> String
+  def self.assemble: (String source) -> String
+
+  class Type < Data
+    attr_reader id: Integer
+    attr_reader kind: Symbol
+    attr_reader element: Type?
+    attr_reader length: (Integer | Symbol)?
+    attr_reader members: Array[Type]
+    attr_reader owner: Module
+    def to_i: () -> Integer
+    def scalar: () -> Type
+  end
+
+  class Module
+    attr_reader version: Integer
+    def initialize: (?version: String, ?generator: Integer) -> void
+    def reserve_id: (?untyped name) -> Integer
+    alias ref reserve_id
+    def emit: (Symbol section, String | Symbol opcode, *untyped operands) -> self
+    def capability: (String | Symbol | Integer name) -> self
+    def extension: (String name) -> self
+    def import: (String name) -> Integer
+    def memory_model: (?String | Symbol addressing, ?String | Symbol model) -> self
+    def name: (Integer | Type | Value target, String text) -> self
+    def decorate: (Integer | Type | Value target, String | Symbol decoration, *untyped values) -> self
+    def member_decorate: (Integer | Type | Value target, Integer member, String | Symbol decoration, *untyped values) -> self
+    def type: (type_description description) -> Type
+    def array: (type_description element, Integer length, ?stride: Integer?) -> Type
+    def struct: (*type_description members, ?offsets: Array[Integer]?, ?block: bool) -> Type
+    def constant: (type_description description, untyped value) -> Value
+    def fragment_shader: (?String name) { (Function) -> untyped } -> Function
+    def vertex_shader: (?String name) { (Function) -> untyped } -> Function
+    def to_binary: () -> String
+    def identifier: (Integer | Type | Value value) -> Integer
+  end
+
+  class Value
+    attr_reader owner: Module
+    attr_reader function: Function?
+    attr_reader type: Type
+    attr_reader id: Integer
+    attr_reader storage: Symbol?
+    def initialize: (Module owner, Function? function, Type type, Integer id, ?Symbol? storage) -> void
+    def to_i: () -> Integer
+    def load: () -> Value
+    def store: (untyped value) -> self
+    def component: (Integer | Symbol index) -> Value
+  end
+
+  class Function
+    attr_reader owner: Module
+    attr_reader id: Integer
+    attr_reader interfaces: Array[Integer]
+    attr_reader stage: Symbol
+    def initialize: (Module owner, Symbol stage) -> void
+    def input: (type_description type, ?location: Integer?, ?builtin: Symbol?, ?flat: bool) -> Value
+    def output: (type_description type, ?location: Integer?, ?builtin: Symbol?) -> Value
+    def sampled_image_2d: (?set: Integer, ?binding: Integer) -> Value
+    def uniform_buffer: (*type_description types, ?set: Integer, ?binding: Integer, offsets: Array[Integer]) -> Value
+    def push_constant: (*type_description types, offsets: Array[Integer]) -> Value
+    def member: (Value buffer, Integer index) -> Value
+    def constant: (untyped item, ?type_description? type) -> Value
+    def value: (untyped item, ?type_description? expected) -> Value
+    def construct: (type_description description, *untyped items) -> Value
+    def splat: (untyped item, ?Integer count) -> Value
+    def sample: (Value texture, untyped uv, ?lod: untyped) -> Value
+    def add: (untyped left, untyped right) -> Value
+    def sub: (untyped left, untyped right) -> Value
+    def div: (untyped left, untyped right) -> Value
+    def mod: (untyped left, untyped right) -> Value
+    def mul: (untyped left, untyped right) -> Value
+    def negate: (untyped item) -> Value
+    def dot: (untyped left, untyped right) -> Value
+    def transpose: (untyped item) -> Value
+    def convert: (untyped item, type_description description) -> Value
+    def equal: (untyped left, untyped right) -> Value
+    def not_equal: (untyped left, untyped right) -> Value
+    def less_than: (untyped left, untyped right) -> Value
+    def less_equal: (untyped left, untyped right) -> Value
+    def greater_than: (untyped left, untyped right) -> Value
+    def greater_equal: (untyped left, untyped right) -> Value
+    def logical_and: (untyped left, untyped right) -> Value
+    def logical_or: (untyped left, untyped right) -> Value
+    def logical_not: (untyped item) -> Value
+    def select: (untyped condition, untyped yes, untyped no) -> Value
+    def if_else: (untyped condition, branch yes, ?branch? no) -> Value?
+    def discard: () -> nil
+    def discard_if: (untyped condition) -> nil
+    def return_void: () -> nil
+    def ext: (Symbol operation, *untyped items) -> Value
+    def emit: (String opcode, *untyped operands) -> self
+    def result: (String opcode, type_description type, *untyped operands) -> Value
+    def finish: () -> self
+    def finished?: () -> bool
+  end
+end
