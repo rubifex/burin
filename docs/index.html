@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en" class="bg-slate-950">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#020617">
+    <meta
+      name="description"
+      content="Electra is a pure Ruby SPIR-V emitter, typed shader DSL, assembler, and disassembler."
+    >
+    <meta property="og:title" content="Electra — SPIR-V shaders in pure Ruby">
+    <meta
+      property="og:description"
+      content="Build compact vertex and fragment shaders directly from Ruby, with no runtime dependencies."
+    >
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://noxdea.github.io/electra/">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://noxdea.github.io/electra/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="./site.css">
+    <title>Electra — SPIR-V shaders in pure Ruby</title>
+  </head>
+  <body class="min-h-dvh bg-slate-950 font-sans text-slate-50 antialiased selection:bg-blue-400 selection:text-slate-950">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-blue-400 focus:px-4 focus:py-3 focus:font-medium focus:text-slate-950 focus:outline-none"
+    >
+      Skip to content
+    </a>
+
+    <header class="border-b border-slate-800">
+      <nav
+        aria-label="Primary navigation"
+        class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8"
+      >
+        <a
+          href="./"
+          class="flex items-center gap-3 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400"
+        >
+          <span class="flex size-9 items-center justify-center border border-blue-400 font-mono text-sm font-medium text-blue-400">E</span>
+          <span class="text-lg font-semibold">Electra</span>
+        </a>
+
+        <div class="hidden items-center gap-8 text-sm text-slate-400 md:flex">
+          <a class="hover:text-slate-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400" href="#capabilities">Capabilities</a>
+          <a class="hover:text-slate-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400" href="#scope">Scope</a>
+          <a class="hover:text-slate-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400" href="#install">Install</a>
+          <a
+            class="border border-slate-700 px-4 py-2 font-medium text-slate-50 hover:border-blue-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400"
+            href="https://github.com/noxdea/electra"
+          >
+            GitHub
+          </a>
+        </div>
+
+        <a
+          class="border border-slate-700 px-4 py-2 text-sm font-medium text-slate-50 hover:border-blue-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400 md:hidden"
+          href="https://github.com/noxdea/electra"
+        >
+          GitHub
+        </a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="mx-auto grid max-w-7xl gap-14 px-6 py-20 sm:py-24 lg:grid-cols-2 lg:items-center lg:gap-20 lg:px-8 lg:py-32">
+        <div class="min-w-0">
+          <p class="font-mono text-sm text-blue-400">Ruby 3.1+ / SPIR-V 1.0–1.6</p>
+          <h1 class="mt-6 max-w-3xl text-balance text-5xl font-semibold leading-none sm:text-6xl lg:text-7xl">
+            Write shaders in Ruby. Emit SPIR‑V directly.
+          </h1>
+          <p class="mt-8 max-w-xl text-pretty text-lg leading-8 text-slate-400">
+            Electra builds compact vertex and fragment shaders without a GLSL compiler, native bindings, or runtime gem dependencies.
+          </p>
+
+          <div class="mt-10 flex flex-col gap-4 sm:flex-row">
+            <a
+              href="#install"
+              class="inline-flex items-center justify-center bg-blue-400 px-6 py-3 font-medium text-slate-950 hover:bg-blue-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400"
+            >
+              Install Electra
+            </a>
+            <a
+              href="https://github.com/noxdea/electra#readme"
+              class="inline-flex items-center justify-center border border-slate-700 px-6 py-3 font-medium text-slate-50 hover:border-slate-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400"
+            >
+              Read the documentation
+            </a>
+          </div>
+        </div>
+
+        <figure class="min-w-0 border border-slate-700 bg-slate-900 shadow-2xl">
+          <figcaption class="flex items-center justify-between border-b border-slate-700 px-5 py-4 text-sm">
+            <span class="font-medium text-slate-200">Ruby source</span>
+            <code class="font-mono text-blue-400">fragment / main</code>
+          </figcaption>
+          <pre class="overflow-x-auto p-5 font-mono text-sm leading-7 text-slate-300 sm:p-6"><code><span class="text-blue-400">mod</span>.fragment_shader do |f|
+  out = f.output(:vec4, location: 0)
+  out.store(f.constant([1, 0, 0, 1]))
+end</code></pre>
+
+          <div class="flex items-center justify-between border-y border-slate-700 bg-slate-950 px-5 py-3 text-sm sm:px-6">
+            <span class="font-medium text-slate-200">Emitted assembly</span>
+            <span class="font-mono tabular-nums text-slate-400">296 bytes</span>
+          </div>
+          <pre class="overflow-x-auto p-5 font-mono text-sm leading-7 text-slate-400 sm:p-6"><code><span class="text-blue-400">OpEntryPoint</span> Fragment %1 "main" %8
+OpExecutionMode %1 OriginUpperLeft
+OpDecorate %8 Location 0
+%8 = OpVariable %7 Output
+%11 = OpConstantComposite %6 %9 %10 %10 %9
+<span class="text-blue-400">OpStore</span> %8 %11</code></pre>
+
+          <div class="flex items-center justify-between border-t border-slate-700 px-5 py-4 font-mono text-xs text-slate-500 sm:px-6">
+            <span>SPIR-V magic</span>
+            <span class="tabular-nums text-slate-300">0x07230203</span>
+          </div>
+        </figure>
+      </section>
+
+      <div class="mx-auto grid max-w-7xl border-y border-slate-800 lg:grid-cols-4 lg:divide-x lg:divide-y-0 lg:divide-slate-800">
+        <dl class="border-b border-slate-800 px-6 py-6 lg:border-b-0 lg:px-8">
+          <dt class="text-sm text-slate-500">Runtime</dt>
+          <dd class="mt-2 font-mono text-slate-100">Pure Ruby</dd>
+        </dl>
+        <dl class="border-b border-slate-800 px-6 py-6 lg:border-b-0 lg:px-8">
+          <dt class="text-sm text-slate-500">Dependencies</dt>
+          <dd class="mt-2 font-mono tabular-nums text-slate-100">0 runtime gems</dd>
+        </dl>
+        <dl class="border-b border-slate-800 px-6 py-6 lg:border-b-0 lg:px-8">
+          <dt class="text-sm text-slate-500">Shader stages</dt>
+          <dd class="mt-2 font-mono text-slate-100">Vertex + fragment</dd>
+        </dl>
+        <dl class="px-6 py-6 lg:px-8">
+          <dt class="text-sm text-slate-500">License</dt>
+          <dd class="mt-2 font-mono text-slate-100">MIT</dd>
+        </dl>
+      </div>
+
+      <section id="capabilities" class="mx-auto grid max-w-7xl gap-12 px-6 py-24 lg:grid-cols-3 lg:gap-20 lg:px-8 lg:py-32">
+        <div>
+          <h2 class="text-balance text-3xl font-semibold leading-tight sm:text-4xl">
+            A small surface for the shaders UI renderers actually need.
+          </h2>
+          <p class="mt-6 text-pretty leading-7 text-slate-400">
+            Work with typed values in Ruby, then inspect or store the exact bytes your Vulkan application consumes.
+          </p>
+        </div>
+
+        <div class="border-t border-slate-700 lg:col-span-2">
+          <article class="grid gap-4 border-b border-slate-700 py-8 sm:grid-cols-2 sm:gap-8">
+            <h3 class="text-xl font-medium">Typed where it matters</h3>
+            <p class="text-pretty leading-7 text-slate-400">
+              Compose vectors, matrices, comparisons, texture samples, GLSL.std.450 operations, and structured branches without writing raw opcodes.
+            </p>
+          </article>
+          <article class="grid gap-4 border-b border-slate-700 py-8 sm:grid-cols-2 sm:gap-8">
+            <h3 class="text-xl font-medium">Bytes you can inspect</h3>
+            <p class="text-pretty leading-7 text-slate-400">
+              Assemble and disassemble numeric-ID SPIR-V with byte-for-byte round trips, exact bounds, and preserved floating-point payloads.
+            </p>
+          </article>
+          <article class="grid gap-4 border-b border-slate-700 py-8 sm:grid-cols-2 sm:gap-8">
+            <h3 class="text-xl font-medium">Layout stays explicit</h3>
+            <p class="text-pretty leading-7 text-slate-400">
+              Set descriptor bindings, offsets, array strides, matrix layout, and push constants yourself. Electra never guesses the CPU/GPU ABI.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="scope" class="border-y border-slate-800 bg-slate-900">
+        <div class="mx-auto grid max-w-7xl gap-12 px-6 py-24 lg:grid-cols-2 lg:gap-20 lg:px-8">
+          <div>
+            <p class="font-mono text-sm text-blue-400">A deliberate boundary</p>
+            <h2 class="mt-5 max-w-lg text-balance text-3xl font-semibold leading-tight sm:text-4xl">
+              A shader emitter, not another compiler toolchain.
+            </h2>
+            <p class="mt-6 max-w-xl text-pretty leading-7 text-slate-400">
+              Electra keeps deployment simple by doing one job in Ruby. The Vulkan implementation and SPIRV-Tools remain the authorities for complete semantic validation.
+            </p>
+          </div>
+
+          <div class="grid gap-10 sm:grid-cols-2">
+            <div>
+              <h3 class="border-b border-blue-400 pb-4 text-lg font-medium">Inside the DSL</h3>
+              <ul class="mt-5 space-y-3 text-pretty text-slate-300">
+                <li>UI vertex and fragment shaders</li>
+                <li>Explicit resource layouts</li>
+                <li>Structured control flow</li>
+                <li>SPIR-V 1.0 through 1.6</li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="border-b border-slate-700 pb-4 text-lg font-medium">Outside the DSL</h3>
+              <ul class="mt-5 space-y-3 text-pretty text-slate-400">
+                <li>GLSL parsing and optimization</li>
+                <li>Compute and ray tracing</li>
+                <li>GPU resource management</li>
+                <li>Complete semantic validation</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="install" class="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32">
+        <div class="grid gap-12 border-l-4 border-blue-400 bg-slate-900 px-6 py-10 sm:px-10 lg:grid-cols-2 lg:items-center lg:px-12 lg:py-12">
+          <div>
+            <h2 class="text-balance text-3xl font-semibold leading-tight sm:text-4xl">
+              Add Electra to your renderer.
+            </h2>
+            <p class="mt-5 max-w-xl text-pretty leading-7 text-slate-400">
+              Install version 0.1.0 from RubyGems. Ruby 3.1 or newer is required; SPIRV-Tools is optional for development validation.
+            </p>
+          </div>
+
+          <div>
+            <div class="overflow-x-auto border border-slate-700 bg-slate-950 px-5 py-5 font-mono text-sm text-slate-200 sm:text-base">
+              <code><span class="select-none text-blue-400">$</span> gem install electra</code>
+            </div>
+            <div class="mt-6 flex flex-col gap-4 sm:flex-row">
+              <a
+                href="https://rubygems.org/gems/electra"
+                class="inline-flex items-center justify-center bg-blue-400 px-6 py-3 font-medium text-slate-950 hover:bg-blue-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400"
+              >
+                Open RubyGems
+              </a>
+              <a
+                href="https://github.com/noxdea/electra#quick-start"
+                class="inline-flex items-center justify-center border border-slate-700 px-6 py-3 font-medium text-slate-50 hover:border-slate-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400"
+              >
+                Start building
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-slate-800">
+      <div class="mx-auto flex max-w-7xl flex-col gap-5 px-6 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between lg:px-8">
+        <p class="text-pretty">Electra is open source under the MIT License.</p>
+        <div class="flex flex-wrap gap-x-6 gap-y-3">
+          <a class="hover:text-slate-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400" href="https://github.com/noxdea/electra/releases/tag/v0.1.0">v0.1.0</a>
+          <a class="hover:text-slate-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400" href="https://github.com/noxdea/electra/blob/main/LICENSE.txt">License</a>
+          <a class="hover:text-slate-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400" href="https://github.com/noxdea/electra">Source</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
